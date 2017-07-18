@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>earth-crud-pages demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
+
+    <link rel="import" href="../../app-route/app-location.html">
+
+    <link rel="import" href="../earth-crud-pages.html">
+
+    <link rel="import" href="demo-edit.html">
+    <link rel="import" href="demo-list.html">
+
+    <custom-style>
+        <style is="custom-style" include="demo-pages-shared-styles">
+        </style>
+    </custom-style>
+</head>
+<body unresolved>
+        <dom-bind>
+            <template>
+                <app-location route="{{route}}" use-hash-as-path></app-location>
+                <earth-crud-pages route="{{route}}">
+                    <demo-list slot="list"></demo-list>
+                    <demo-edit name="edit"></demo-edit>
+                </earth-crud-pages>
+            </template>
+        </dom-bind>
+</body>
+</html>

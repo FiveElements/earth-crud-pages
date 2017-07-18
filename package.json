@@ -1,0 +1,27 @@
+{
+  "name": "earth-crud-pages",
+  "version": "0.0.1",
+  "description": "Earth Cruddy layout",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FiveElements/earth-crud-pages.git"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "polymer lint  --no-follow-dependencies  --include-dependencies bower_components/*  --input *.html",
+    "dev": "polymer serve -p 8080 | npm run watch",
+    "test": "polymer test",
+    "dev-install": "npm install -g bower polymer-cli browser-sync",
+    "watch": "browser-sync start --proxy localhost:8080 --startPath /components/earth-crud-pages/demo/ --files *.html,*.js,demo/*"
+  },
+  "author": "FiveElements",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.18.6",
+    "gulp": "^3.9.1",
+    "proxy-middleware": "^0.15.0"
+  }
+}

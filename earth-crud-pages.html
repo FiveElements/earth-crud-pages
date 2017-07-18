@@ -1,0 +1,92 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<link rel="import" href="../iron-pages/iron-pages.html">
+
+
+<link rel="import" href="../app-route/app-route.html">
+
+<dom-module id="earth-crud-pages">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+
+        <app-route route="{{route}}" pattern="/list"
+                   data="{{routeData}}"
+                   tail="{{subroute}}">
+        </app-route>
+        <app-route route="{{route}}" pattern="/:page/:id"
+                   data="{{routeEditData}}"
+                   tail="{{subrouteEdit}}">
+        </app-route>
+
+        <iron-pages id="pages"
+                    selected="[[page]]"
+                    attr-for-selected="page"
+                    fallback-selection="list"
+                    activate-event="_handlePageChanged"
+                    role="main">
+            <div page="list">
+                <slot name="list"></slot>
+            </div>
+            <div page="edit">
+                <slot name="edit" id="pageEdit"></slot>
+            </div>
+        </iron-pages>
+
+
+    </template>
+
+    <script>
+        /**
+         * `earth-crud-pages`
+         * Polymer 2 Crud pages
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class EarthCrudPages extends Polymer.Element {
+            static get is() {
+                return 'earth-crud-pages';
+            }
+
+            static get properties() {
+                return {
+                    route: {
+                        type: Object,
+                        notify: true
+                    },
+                    page: {
+                        type: String,
+                        value: 'edit',
+                        notify: true
+                    },
+                    routeData: {
+                        type: Object,
+                        observer: '_routeDataChanged',
+                        notify: true
+                    },
+                    subroute: {
+                        type: Object,
+                        notify: true
+                    },
+                    entityId: {
+                        type: Object,
+                        notify: true
+                    },
+                };
+            }
+
+            _routeDataChanged(oldValue, newValue) {
+                console.log(oldValue);
+                this.page = this.routeData.page;
+            }
+
+        }
+
+        window.customElements.define(EarthCrudPages.is, EarthCrudPages);
+    </script>
+</dom-module>
