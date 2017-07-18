@@ -1,5 +1,6 @@
 <link rel="import" href="../../polymer/polymer-element.html">
 
+<link rel="import" href="../../earth-cruddy/earth-cruddy.html">
 <link rel="import" href="../../air-cruddy/air-cruddy-elasticsearch.html">
 
 
@@ -16,7 +17,7 @@
             <div slot="content">
                 <h1>Page content</h1>
                 <air-cruddy-elasticsearch id="cruddy" data="{{data}}" url="http://localhost:9200/5elements/5elements"
-                                          entity-id="{{entityId}}"  debug>
+                                          entity-id="{{entityId}}" >
                     <!--<div>id : [[data.id]]</div>-->
                     <div style="width: 600px">
 
@@ -60,6 +61,7 @@
                 return {
                     entityId: {
                         type: String,
+                        value: '1',
                         notify:true
                     }
                 };

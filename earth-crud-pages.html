@@ -17,15 +17,20 @@
                    data="{{routeData}}"
                    tail="{{subroute}}">
         </app-route>
+        <!--<app-route route="{{route}}" pattern="/article/:id"-->
+                   <!--data="{{routeEditData}}"-->
+                   <!--tail="{{subrouteEdit}}">-->
+        <!--</app-route>-->
         <app-route route="{{route}}" pattern="/:page/:id"
                    data="{{routeEditData}}"
                    tail="{{subrouteEdit}}">
         </app-route>
 
+        <div on-tap="defineRouteList">Page: [[page]]</div>
         <iron-pages id="pages"
                     selected="[[page]]"
                     attr-for-selected="page"
-                    fallback-selection="list"
+                    fallback-selection="fallback"
                     activate-event="_handlePageChanged"
                     role="main">
             <div page="list">
@@ -33,6 +38,13 @@
             </div>
             <div page="edit">
                 <slot name="edit" id="pageEdit"></slot>
+            </div>
+            <div page="article">Article</div>
+            <div page="page-1">One</div>
+            <div page="page-2">Two</div>
+            <div page="page-3">Three</div>
+            <div page="fallback">
+                Change pages by typing 'page-1', 'page-2', or 'page-3' in the input above.
             </div>
         </iron-pages>
 
@@ -57,14 +69,20 @@
                 return {
                     route: {
                         type: Object,
+                        observer: '_routeChanged',
                         notify: true
                     },
                     page: {
                         type: String,
-                        value: 'edit',
+                        value: 'page-1',
                         notify: true
                     },
                     routeData: {
+                        type: Object,
+                        observer: '_routeDataChanged',
+                        notify: true
+                    },
+                    routeEditData: {
                         type: Object,
                         observer: '_routeDataChanged',
                         notify: true
@@ -80,9 +98,73 @@
                 };
             }
 
-            _routeDataChanged(oldValue, newValue) {
-                console.log(oldValue);
-                this.page = this.routeData.page;
+            // --- Life Cycle
+            // --- ---------------------------
+
+            constructor() {
+                super();
+                this._boundListenerChangePageEvent = this._changePageEvent.bind(this);
+            }
+
+            connectedCallback() {
+                this.addEventListener('earth-page', this._boundListenerChangePageEvent);
+                super.connectedCallback();
+            }
+
+            disconnectedCallback() {
+                super.disconnectedCallback();
+                this.removeEventListener('earth-page', this._boundListenerChangePageEvent);
+            }
+
+
+            // --- Observer
+            // --- ---------------------------
+
+            _routeChanged( newValue, oldValue) {
+                console.log('_routeChanged ', newValue);
+            }
+            _routeDataChanged(newValue, oldValue) {
+                console.log('_routeDataChanged ', JSON.stringify( newValue));
+                this._print();
+                this.page = newValue.page;
+            }
+
+            // --- Route
+            // --- ---------------------------
+
+            _changePageEvent(e) {
+                e.preventDefault();
+                var detail = e.detail;
+//                if (detail.id) {
+                this.entityId = detail.id;
+//                }
+                this.page = detail.page;
+                this._changeUrl(detail);
+            }
+
+            _changeUrl (opt) {
+                var newRoute = JSON.parse(JSON.stringify( this.route));
+                newRoute.path =  '/'+ opt.page;
+                if (opt.id) {
+                    newRoute.path += '/'+opt.id;
+                }
+//                newRoute.prefix = '/sam';
+                this.route= newRoute;
+            }
+
+
+
+            defineRouteList(){
+                console.log('request defineRouteList');
+                this._changeUrl({page:'article', id:'456'})
+//                this.set('route.path', '/list/');
+            }
+
+            _print () {
+                console.log('route : ',this.route);
+                console.log('routeData : ',this.routeData);
+                console.log('subroute : ',this.subroute);
+                console.log('routeEditData : ',this.routeEditData);
             }
 
         }

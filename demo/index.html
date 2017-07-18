@@ -29,9 +29,10 @@
         <dom-bind>
             <template>
                 <app-location route="{{route}}" use-hash-as-path></app-location>
+                <!--<app-location route="{{route}}"></app-location>-->
                 <earth-crud-pages route="{{route}}">
                     <demo-list slot="list"></demo-list>
-                    <demo-edit name="edit"></demo-edit>
+                    <demo-edit slot="edit"></demo-edit>
                 </earth-crud-pages>
             </template>
         </dom-bind>
