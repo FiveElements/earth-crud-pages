@@ -13,14 +13,10 @@
             }
         </style>
 
-        <app-route route="{{route}}" pattern="/list"
+        <app-route route="{{route}}" pattern="/:page"
                    data="{{routeData}}"
                    tail="{{subroute}}">
         </app-route>
-        <!--<app-route route="{{route}}" pattern="/article/:id"-->
-                   <!--data="{{routeEditData}}"-->
-                   <!--tail="{{subrouteEdit}}">-->
-        <!--</app-route>-->
         <app-route route="{{route}}" pattern="/:page/:id"
                    data="{{routeEditData}}"
                    tail="{{subrouteEdit}}">
