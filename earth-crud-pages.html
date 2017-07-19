@@ -23,7 +23,7 @@
         </app-route>
 
         <div on-tap="defineRouteList">Page: [[page]]</div>
-        <iron-pages id="pages" selected="[[page]]" attr-for-selected="page"
+        <iron-pages id="pages" selected="[[page]]" attr-for-selected="[[attrForSelected]]"
                     fallback-selection="fallback"
                     role="main">
             <slot></slot>
@@ -53,6 +53,10 @@
 
             static get properties() {
                 return {
+                    attrForSelected: {
+                        type: String,
+                        value: 'page'
+                    },
                     route: {
                         type: Object,
                         observer: '_routeChanged',
@@ -92,8 +96,8 @@
             }
 
             connectedCallback() {
-                this.addEventListener('earth-page', this._boundListenerChangePageEvent);
                 super.connectedCallback();
+                this.addEventListener('earth-page', this._boundListenerChangePageEvent);
             }
 
             disconnectedCallback() {
