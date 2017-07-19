@@ -19,22 +19,18 @@
         </app-route>
         <app-route route="{{route}}" pattern="/:page/:id"
                    data="{{routeEditData}}"
-                   tail="{{subrouteEdit}}">
+                   tail="{{subrouteEdit}}}">
         </app-route>
 
         <div on-tap="defineRouteList">Page: [[page]]</div>
         <iron-pages id="pages" selected="[[page]]" attr-for-selected="page"
                     fallback-selection="fallback"
-                    activate-event="_handlePageChanged"
                     role="main">
-            <div page="list">
-                <slot name="list"></slot>
-            </div>
-            <div page="edit">
-                <slot name="edit" id="pageEdit"></slot>
-            </div>
+            <slot></slot>
             <div page="fallback">
-                <h1>404 Page Not Found !!!</h1>
+                <slot name="fallback">
+                    <h1>404 Page Not Found !!!</h1>
+                </slot>
             </div>
         </iron-pages>
 
@@ -110,11 +106,12 @@
             // --- Observer
             // --- ---------------------------
 
-            _routeChanged( newValue, oldValue) {
+            _routeChanged(newValue, oldValue) {
                 console.log('_routeChanged ', newValue);
             }
+
             _routeDataChanged(newValue, oldValue) {
-                console.log('_routeDataChanged ', JSON.stringify( newValue));
+                console.log('_routeDataChanged ', JSON.stringify(newValue));
                 this._print();
                 this.page = newValue.page;
             }
@@ -132,29 +129,28 @@
                 this._changeUrl(detail);
             }
 
-            _changeUrl (opt) {
-                var newRoute = JSON.parse(JSON.stringify( this.route));
-                newRoute.path =  '/'+ opt.page;
+            _changeUrl(opt) {
+                var newRoute = JSON.parse(JSON.stringify(this.route));
+                newRoute.path = '/' + opt.page;
                 if (opt.id) {
-                    newRoute.path += '/'+opt.id;
+                    newRoute.path += '/' + opt.id;
                 }
 //                newRoute.prefix = '/sam';
-                this.route= newRoute;
+                this.route = newRoute;
             }
 
 
-
-            defineRouteList(){
+            defineRouteList() {
                 console.log('request defineRouteList');
-                this._changeUrl({page:'article', id:'456'})
+                this._changeUrl({page: 'edit', id: '1'})
 //                this.set('route.path', '/list/');
             }
 
-            _print () {
-                console.log('route : ',this.route);
-                console.log('routeData : ',this.routeData);
-                console.log('subroute : ',this.subroute);
-                console.log('routeEditData : ',this.routeEditData);
+            _print() {
+                console.log('route : ', this.route);
+                console.log('routeData : ', this.routeData);
+                console.log('subroute : ', this.subroute);
+                console.log('routeEditData : ', this.routeEditData);
             }
 
         }
