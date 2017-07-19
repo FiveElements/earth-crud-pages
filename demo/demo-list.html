@@ -96,10 +96,6 @@
                     data: {
                         type: Array,
                         notify: true
-                    },
-                    prop1: {
-                        type: String,
-                        value: 'demo-list'
                     }
                 };
             }
@@ -109,15 +105,24 @@
             }
 
             _handleListSelectItem(e) {
-                console.log('Select list item', e);
                 let tplInstance = this.$.list.modelForElement(e.target);
-                console.log('Select list item ==>', tplInstance);
+//                console.log('Select list item ==>', tplInstance);
                 let model = tplInstance.item;
                 if (model) {
                     console.log("List Event", model);
+                    this._fireChangePage({ id: model.id, page:'edit'});
                 }
             }
 
+            /**
+             * Fire an event to notify the close of this page.
+             *
+             * @event earth-layout-close
+             */
+            _fireChangePage(detail) {
+                this.dispatchEvent(new CustomEvent('earth-page', {detail, bubbles: true, composed: true}));
+                return detail;
+            }
 
         }
 
