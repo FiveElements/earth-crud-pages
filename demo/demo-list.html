@@ -19,6 +19,7 @@
                 padding-bottom: 16px;
                 @apply --layout-flex;
             }
+
             .item {
                 @apply --layout-horizontal;
                 margin: 16px 16px 0 16px;
@@ -27,6 +28,7 @@
                 background-color: white;
                 border: 1px solid #ddd;
             }
+
             .avatar {
                 height: 40px;
                 width: 40px;
@@ -34,24 +36,28 @@
                 box-sizing: border-box;
                 background-color: #DDD;
             }
+
             .pad {
                 padding: 0 16px;
                 @apply --layout-flex;
                 @apply --layout-vertical;
             }
+
             .primary {
                 font-size: 16px;
                 font-weight: bold;
             }
+
             .secondary {
                 font-size: 14px;
             }
+
             .dim {
                 color: gray;
             }
         </style>
         <h2>Hello [[prop1]]!</h2>
-        <iron-list items="[[data]]" as="item" scroll-target="document">
+        <iron-list id="list" items="[[data]]" as="item" scroll-target="document" on-tap="_handleListSelectItem">
             <template>
                 <div>
                     <div class="item" tabindex$="[[tabIndex]]">
@@ -101,6 +107,18 @@
             iconForItem(item) {
                 return item ? (item.integer < 50 ? 'star-border' : 'star') : '';
             }
+
+            _handleListSelectItem(e) {
+                console.log('Select list item', e);
+                let tplInstance = this.$.list.modelForElement(e.target);
+                console.log('Select list item ==>', tplInstance);
+                let model = tplInstance.item;
+                if (model) {
+                    console.log("List Event", model);
+                }
+            }
+
+
         }
 
         window.customElements.define(DemoList.is, DemoList);

@@ -1,0 +1,88 @@
+<link rel="import" href="../../polymer/polymer-element.html">
+
+
+<link rel="import" href="../../iron-ajax/iron-ajax.html">
+
+<link rel="import" href="../../paper-button/paper-button.html">
+
+<!--
+@group Five Elements
+@element demo-import
+-->
+<dom-module id="demo-import">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+
+        <h1>Import Data</h1>
+        <paper-button on-tap="importData"  disabled$="[[!data]]">Import Data</paper-button>
+
+        <iron-ajax url="contacts.json" last-response="{{data}}" auto></iron-ajax>
+
+    </template>
+
+    <script>
+        /**
+         * `demo-import`
+         *
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class DemoImport extends Polymer.Element {
+            static get is() {
+                return 'demo-import';
+            }
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Object
+                    },
+                    result: {
+                        type: Array,
+                        notify: true
+                    }
+                };
+            }
+
+            importData() {
+                const createPromises = this.data.map(line => {
+                    console.log(JSON.stringify(line));
+                    const clone = JSON.parse(JSON.stringify(line));
+                    const id = line.id;
+                    delete clone.id;
+                    return this.fetchInport(id, clone);
+                });
+                return Promise.all(createPromises).then( result => {
+                    console.log(result);
+                })
+            }
+
+            fetchInport(id, line) {
+                const myHeaders = new Headers({
+                    'Content-Type': 'application/json' // "text/plain"
+                });
+                const init = {
+                    method: 'PUT',
+                    mode:'cors',
+                    cache: 'default',
+                    redirect: 'follow',
+                    referrer: 'client',
+                    credentials: this.credentials,
+                    body: JSON.stringify(line),
+                    headers: myHeaders
+                };
+                const url = 'http://localhost:9200/5contact/5contact/'+id;
+                return window.fetch(url, init);
+            }
+
+        }
+
+        window.customElements.define(DemoImport.is, DemoImport);
+    </script>
+</dom-module>

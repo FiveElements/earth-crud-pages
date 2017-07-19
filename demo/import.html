@@ -12,13 +12,9 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
     <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
+ >
 
-    <link rel="import" href="../../app-route/app-location.html">
-
-    <link rel="import" href="../earth-crud-pages.html">
-
-    <link rel="import" href="demo-edit.html">
-    <link rel="import" href="demo-list.html">
+    <link rel="import" href="demo-import.html">
 
     <custom-style>
         <style is="custom-style" include="demo-pages-shared-styles">
@@ -28,12 +24,7 @@
 <body unresolved>
         <dom-bind>
             <template>
-                <app-location route="{{route}}" use-hash-as-path></app-location>
-                <!--<app-location route="{{route}}"></app-location>-->
-                <earth-crud-pages route="{{route}}" route-edit-data="{{editData}}">
-                    <demo-list  page="list"></demo-list>
-                    <demo-edit  page="edit" entity-id="{{editData.id}}"></demo-edit>
-                </earth-crud-pages>
+                <demo-import></demo-import>
             </template>
         </dom-bind>
 </body>
