@@ -2,6 +2,9 @@
 
 Polymer 2 Crud pages
 
+## Bug 
+* https://github.com/PolymerElements/app-route/issues/205
+
 ## Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your element locally.
