@@ -28,7 +28,7 @@
         </app-route>
 
         <iron-pages id="pages" selected="[[page]]" attr-for-selected="[[attrForSelected]]"
-                    fallback-selection="fallback"
+                    fallback-selection="[[fallbackSelection]]"
                     role="main">
             <slot></slot>
             <div page="fallback">
@@ -61,6 +61,10 @@
                         type: String,
                         value: 'page'
                     },
+                    fallbackSelection: {
+                        type: String,
+                        value: 'fallback'
+                    },
                     route: {
                         type: Object,
                         notify: true
@@ -82,8 +86,7 @@
                     },
                     subrouteTail: {
                         type: Object,
-                        notify: true,
-                        value: function () { return {}; }
+                        notify: true
                     },
                     /** params **/
                     routeParams: {
@@ -92,10 +95,6 @@
                     },
                     page: {
                         type: String,
-                        notify: true
-                    },
-                    entityId: {
-                        type: Object,
                         notify: true
                     },
                 };
@@ -126,7 +125,7 @@
             // --- ---------------------------
             _pathDataChanged(newValue, oldValue) {
                 console.log('_routeDataChanged ', JSON.stringify(newValue));
-                this._print(true);
+//                this._print(true);
                 this.page = newValue.page;
             }
 
@@ -144,8 +143,6 @@
                 const detail = e.detail;
                 console.log('_changePageEvent', detail);
                 e.preventDefault();
-//                this.entityId = detail.id;
-//                this.page = detail.page;
                 this._changeUrl(detail);
             }
 
