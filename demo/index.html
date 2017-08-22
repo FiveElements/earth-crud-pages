@@ -30,7 +30,7 @@
             <template>
                 <app-location route="{{route}}" use-hash-as-path></app-location>
                 <!--<app-location route="{{route}}"></app-location>-->
-                <earth-crud-pages route="{{route}}" route-edit-data="{{editData}}">
+                <earth-crud-pages route="{{route}}" route-data="{{editData}}">
                     <demo-list  page="list"></demo-list>
                     <demo-edit  page="edit" entity-id="{{editData.id}}"></demo-edit>
                 </earth-crud-pages>

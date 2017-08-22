@@ -18,7 +18,7 @@
         </style>
 
         <h1>Import Data</h1>
-        <paper-button on-tap="importData"  disabled$="[[!data]]">Import Data</paper-button>
+        <paper-button on-tap="importData"  disabled$="[[!data]]" raised>Import Data</paper-button>
 
         <iron-ajax url="contacts.json" last-response="{{data}}" auto></iron-ajax>
 
