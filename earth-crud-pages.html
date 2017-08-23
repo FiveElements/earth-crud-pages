@@ -183,7 +183,7 @@
             }
 
             __callFuncOnItem(funcName, item) {
-                if (item && item[funcName]) {
+                if (item && funcName && item[funcName]) {
                     return item[funcName]();
                 }
             }
