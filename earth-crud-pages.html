@@ -33,7 +33,7 @@
             <slot></slot>
             <div page="fallback">
                 <slot name="fallback">
-                    <h1>[[page]] 404 Page Not Found !!!</h1>
+                    <h1>404 Page Not Found !!!</h1>
                 </slot>
             </div>
         </iron-pages>
@@ -97,6 +97,22 @@
                         type: String,
                         notify: true
                     },
+                    /** Feature **/
+                    selectedPageFuncName: {
+                        type: String,
+                        value: 'selectedPage'
+                    },
+                    deselectedPageFuncName: {
+                        type: String,
+                        value: 'deselectedPage'
+                    },
+                    /** read only **/
+                    selectedPage: {
+                        type: Object,
+                        readOnly: true,
+                        notify: true,
+                        observer: '__selectedPageChanged'
+                    }
                 };
             }
 
@@ -108,40 +124,40 @@
             constructor() {
                 super();
                 this._boundListenerChangePageEvent = this._changePageEvent.bind(this);
+                this._boundListenerSelectPageEvent = this._selectPageEvent.bind(this);
+                this._boundListenerDeselectPageEvent = this._deselectPageEvent.bind(this);
             }
 
             connectedCallback() {
                 super.connectedCallback();
                 this.addEventListener('earth-page', this._boundListenerChangePageEvent);
+                this.addEventListener('iron-select', this._boundListenerSelectPageEvent);
+                this.addEventListener('iron-deselect', this._boundListenerDeselectPageEvent);
             }
 
             disconnectedCallback() {
                 super.disconnectedCallback();
                 this.removeEventListener('earth-page', this._boundListenerChangePageEvent);
+                this.removeEventListener('iron-select', this._boundListenerSelectPageEvent);
+                this.removeEventListener('iron-deselect', this._boundListenerDeselectPageEvent);
             }
 
 
             // --- Observer
             // --- ---------------------------
             _pathDataChanged(newValue, oldValue) {
-                console.log('_routeDataChanged ', JSON.stringify(newValue));
-//                this._print(true);
                 this.page = newValue.page;
             }
 
-//            _routeDataEditChanged(newValue, oldValue) {
-//                console.log('_routeDataChangedEdit ', JSON.stringify(newValue));
-//                this._print(false);
-//                this.page = newValue.page;
-//            }
+
 
             // --- Route
             // --- ---------------------------
 
             _changePageEvent(e) {
-                console.log('---- receive event earth-page', e);
+//                console.log('---- receive event earth-page', e);
                 const detail = e.detail;
-                console.log('_changePageEvent', detail);
+//                console.log('_changePageEvent', detail);
                 e.preventDefault();
                 this._changeUrl(detail);
             }
@@ -154,23 +170,22 @@
                 this.set('route.path', path);
             }
 
+            // --- Page Selected Event Listeners
+            // --- ---------------------------
+            _selectPageEvent(e) {
+                const item = e.detail.item;
+                this.__callFuncOnItem(this.selectedPageFuncName, item);
+            }
 
+            _deselectPageEvent(e) {
+                const item = e.detail.item;
+                this.__callFuncOnItem(this.deselectedPageFuncName, item);
+            }
 
-            _print(type) {
-                if (type) {
-                    console.log('..............................................................................');
-                    console.log('... route : ', JSON.stringify(this.route));
-                    console.log('... pathData : ', JSON.stringify(this.pathData));
-                    console.log('... routeParams : ', JSON.stringify(this.routeParams));
-                    console.log('..............................................................................');
-                } else {
-                    console.log('..............................................................................');
-                    console.log('... ... subroute : ', JSON.stringify(this.subroute));
-                    console.log('... ... routeData : ', JSON.stringify(this.routeData));
-                    console.log('... ... subrouteTail : ', JSON.stringify(this.subrouteTail));
-                    console.log('..............................................................................');
+            __callFuncOnItem(funcName, item) {
+                if (item && item[funcName]) {
+                    return item[funcName]();
                 }
-
             }
 
         }
